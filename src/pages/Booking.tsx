@@ -1,6 +1,6 @@
 import { IonAccordion, IonAccordionGroup, IonButton, IonButtons, IonCard, IonCardContent, IonCol, IonContent, IonFooter, IonGrid, IonHeader, IonIcon, IonInput, IonItem, IonLabel, IonList, IonMenuToggle, IonModal, IonPage, IonPopover, IonRefresher, IonRefresherContent, IonRow, IonSearchbar, IonSelect, IonSelectOption, IonTitle, IonToolbar, RefresherEventDetail, useIonModal, useIonPopover } from '@ionic/react';
 import './page.css';
-import { add, addOutline, arrowBack, arrowForwardCircleOutline, arrowRedoOutline, businessOutline, chevronBackOutline, closeOutline, cloudUploadOutline, fastFoodOutline, key, keyOutline, listOutline, locateOutline, locationSharp, notificationsOutline, optionsOutline, personOutline, pricetagOutline, remove, searchOutline, settingsOutline, sparklesSharp, trashOutline } from 'ionicons/icons';
+import { add, addOutline, arrowBack, arrowForwardCircleOutline, arrowRedoOutline, businessOutline, chevronBackOutline, chevronDownOutline, closeOutline, cloudUploadOutline, fastFoodOutline, key, keyOutline, listOutline, locateOutline, locationSharp, notificationsOutline, optionsOutline, personOutline, pricetagOutline, remove, searchOutline, settingsOutline, sparklesSharp, trashOutline } from 'ionicons/icons';
 import Calendar from 'react-calendar';
 import { useEffect, useRef, useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -25,6 +25,8 @@ const Menu: React.FC = () => {
     const history = useHistory();
     const [isModalOpenDetail, setIsModalOpenDetail] = useState(false);
     const [isModalOpenMenu, setIsModalOpenMenu] = useState(false);
+
+    const [isModalOpenAddDetail, setIsModalOpenAddDetail] = useState(false);
     function handleRefresh(event: CustomEvent<RefresherEventDetail>) {
         setTimeout(() => {
             // Any calls to load data go here
@@ -208,9 +210,49 @@ const Menu: React.FC = () => {
     const [selectTableName, setSelectTableName] = useState("");
     const [selectTable, setSelectTable] = useState<number>();
 
-    const totalAmount = selectFood?.reduce((acc, food) => {
-        return acc + (food.price * food.quantity);
-    }, 0);
+    const [total, setTotal] = useState<number>(0);
+    const [discount, setdiscount] = useState<number>(0);
+    const [serviceFee, setserviceFee] = useState<number>(0);
+    const [giamtien, setgiamtien] = useState<number>(0);
+    const [totalAmount, setTotalAmount] = useState<number>(0);
+
+    const [provisional, setprovisional] = useState<number>(0);
+    const [vat, setVat] = useState<number>(0);
+    const [payment, setPayment] = useState<number>(0);
+
+    useEffect(() => {
+        const totalAmount = selectFood?.reduce((acc, food) => {
+            return acc + (food.price * food.quantity);
+        }, 0);
+        const discount1 = totalAmount / 100 * 10;
+        const serviceFee1 = totalAmount / 100 * 5;
+        const tamtinh = totalAmount - discount1 - serviceFee - giamtien;
+        const thue = tamtinh / 100 * 10;
+        const thanhtoan = tamtinh - thue;
+        setTotal(totalAmount ?? 0);
+        setdiscount(discount1);
+        setserviceFee(serviceFee1);
+        setprovisional(tamtinh);
+        setVat(thue);
+        setPayment(thanhtoan);
+
+    }, [selectFood])
+
+    const [phidichvu, setPhidichvu] = useState<number>(0);
+   
+
+    const handleChange = (e : any) => {
+        let value = e.target.value;
+        // Loại bỏ số 0 đầu (trừ trường hợp nhập 0 duy nhất)
+        if (value.length > 1 && value.startsWith("0")) {
+            value = value.replace(/^0+/, "");
+        }
+        const number = Math.max(0, Math.min(100, Number(value)));
+        setPhidichvu(value === "" ? 0 : number);
+        console.log(123, number);
+        
+    };
+
 
     return (
         <IonPage>
@@ -283,37 +325,47 @@ const Menu: React.FC = () => {
                         </>
                     }
                 </IonGrid>
-                <IonCard className='m-0 p-3 bg-light fs-13 fixed-bottom rounded-0'>
+            </IonContent>
+            <IonFooter>
+                <IonCard className='m-0 p-3 py-2 fs-13  rounded-0' style={{ backdropFilter: "blur(50px)" }}>
                     <IonRow className=' fs-13 fw-bold d-flex justify-content-between align-items-center'>
-                        <div>Tổng tiền</div>
-                        <div className='fs-15'>{totalAmount.toLocaleString()} đ</div>
+                        <div>Tổng tiền </div>
+                        <div className='fs-15'>{total.toLocaleString()}</div>
                     </IonRow>
                     <IonRow className='fst-italic d-flex justify-content-between align-items-center ms-4 mt-1'>
-                        <div>Giảm giá 10%</div>
-                        <div>{totalAmount/100*10}</div>
+                        <div>Giảm giá 10% </div>
+                        <div>{discount.toLocaleString()}</div>
                     </IonRow>
                     <IonRow className='fst-italic d-flex justify-content-between align-items-center ms-4 mt-1'>
                         <div>Giảm tiền</div>
-                        <div>58.000</div>
+                        <div>{giamtien.toLocaleString()}</div>
                     </IonRow>
                     <IonRow className='fst-italic d-flex justify-content-between align-items-center ms-4 mt-1'>
                         <div>Phí dịch vụ 5%</div>
-                        <div>{totalAmount/100*5}</div>
+                        <div>{serviceFee.toLocaleString()}</div>
                     </IonRow>
                     <IonRow className='fw-bold d-flex justify-content-between align-items-center text-primary mt-2'>
                         <div>Tạm tính</div>
-                        <div className='fs-15'>{totalAmount-totalAmount/100*10-totalAmount/100*5}</div>
+                        <div className='fs-15'>{provisional.toLocaleString()}</div>
                     </IonRow>
                     <IonRow className='fst-italic d-flex justify-content-between align-items-center ms-4 mt-1'>
                         <div>Thuế</div>
-                        <div>{(totalAmount-totalAmount/100*10-totalAmount/100*5)/100*10}</div>
+                        <div>{vat.toLocaleString()}</div>
                     </IonRow>
                     <IonRow className='fw-bold d-flex justify-content-between align-items-center text-success mt-2'>
                         <div>Thanh toán</div>
-                        <div className='fs-15'>{totalAmount-totalAmount/100*10-totalAmount/100*5-(totalAmount-totalAmount/100*10-totalAmount/100*5)/100*10}</div>
+                        <div className='fs-15'>{payment.toLocaleString()}</div>
+                    </IonRow>
+                    <IonRow className='d-flex align-items-center mt-2'>
+                        <IonCol size='6'>
+                            <button onClick={() => { setIsModalOpenAddDetail(true) }} className='p-3 rounded-pill bg-secondary d-flex justify-content-between align-items-center text-white fs-13 w-100'>Thêm chi tiết <IonIcon className='' style={{ fontSize: "18px" }} icon={chevronDownOutline}></IonIcon></button>
+                        </IonCol>
+                        <IonCol size='6'>
+                            <button className='p-3 fs-13 fw-bold bg-danger text-white rounded-pill w-100'>Thanh toán</button>
+                        </IonCol>
                     </IonRow>
                 </IonCard>
-            </IonContent>
+            </IonFooter>
             <IonModal isOpen={isModalOpenDetail} onDidDismiss={() => { setIsModalOpenDetail(false) }} initialBreakpoint={1} breakpoints={[0, 1]}>
                 <div className=' p-0 pb-3' >
 
@@ -454,6 +506,41 @@ const Menu: React.FC = () => {
 
                     </IonRow>
 
+                </div>
+            </IonModal>
+            {/* Add detail */}
+            <IonModal isOpen={isModalOpenAddDetail} onDidDismiss={() => { setIsModalOpenAddDetail(false) }} initialBreakpoint={1} breakpoints={[0, 1]}>
+                <div className=' p-0 ' >
+                    <div className='d-flex justify-content-between mx-3 py-3 fixed-header' >
+                        <div className='fs-15 fw-bold'>Chi tiết thêm</div>
+                        <IonIcon onClick={() => setIsModalOpenAddDetail(false)} icon={closeOutline} style={{ fontSize: "25px" }}></IonIcon>
+                    </div>
+                    <IonGrid className='p-3 pt-0 overflowY h-100 fs-13' style={{
+                        overflowY: "auto",
+                        maxHeight: "70vh"
+                    }}>
+                        <IonRow className=' fs-13 mt-3'>Phí dịch vụ (%)</IonRow>
+                        <IonRow className='mt-2'>
+                            <input type='number' min="0" max="100" value={phidichvu}
+                                onChange={handleChange} className='p-3 rounded-4 fs-13 border border-0 shadow-sm bg-secondary bg-opacity-25  w-100' placeholder="Phí dịch vụ"></input>
+                        </IonRow>
+                        <IonRow className=' fs-13 mt-3'>Giảm giá (%)</IonRow>
+                        <IonRow className='mt-2'>
+                            <input type='number' min="0" max="100" className='p-3 rounded-4 fs-13 border border-0 shadow-sm bg-secondary bg-opacity-25  w-100' placeholder="Giảm giá"></input>
+                        </IonRow>
+                        <IonRow className=' fs-13 mt-3'>Giảm giá tiền</IonRow>
+                        <IonRow className='mt-2'>
+                            <input type='number' className='p-3 rounded-4 fs-13 border border-0 shadow-sm bg-secondary bg-opacity-25  w-100' placeholder="Giảm giá tiền"></input>
+                        </IonRow>
+                        <IonRow className=' fs-13 mt-3'>Ghi chú</IonRow>
+                        <IonRow className='mt-2'>
+                            <textarea rows={5} className='p-3 rounded-4 fs-13 border border-0 shadow-sm bg-secondary bg-opacity-25  w-100' placeholder="Ghi chú"></textarea>
+                        </IonRow>
+                        <IonRow className=' mt-3'>
+                            <button className='rounded-pill p-3 bg-primary fs-13 fw-bold text-white w-100'>Hoàn thành </button>
+                        </IonRow>
+
+                    </IonGrid>
                 </div>
             </IonModal>
 
