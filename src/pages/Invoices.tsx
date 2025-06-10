@@ -55,22 +55,6 @@ const Invoices: React.FC = () => {
     }
     return (
         <IonPage>
-            <IonHeader style={{ backdropFilter: "blur(50px)" }}>
-                <IonToolbar className='shadow-none border border-0'>
-                    <IonRow className='d-flex justify-content-between align-items-center p-1'>
-                        <img src='../image/happy-corp-logo.png' alt='logo' className='' style={{ width: "70px" }}></img>
-                        <div className='d-flex align-items-center'>
-                            <button onClick={() => present()} className='rounded-circle p-2 bg-switch-box' style={{ width: "35px", height: "35px" }}> <IonIcon icon={businessOutline} size='15px'></IonIcon></button>
-                            <Link to='/user-notification'>
-                                <button className='rounded-circle p-2 bg-switch-box ms-2' style={{ width: "35px", height: "35px" }}> <IonIcon icon={notificationsOutline} size='15px'></IonIcon></button>
-                            </Link>
-                            <IonMenuToggle menu="end" autoHide={false}>
-                                <img src='https://static-cse.canva.com/blob/1992462/1600w-vkBvE1d_xYA.jpg' alt='avatar' className='rounded-circle ms-2' style={{ width: "40px", height: "40px" }}></img>
-                            </IonMenuToggle>
-                        </div>
-                    </IonRow>
-                </IonToolbar>
-            </IonHeader>
             <IonContent fullscreen className='page-background'>
                 <IonRefresher slot="fixed" onIonRefresh={handleRefresh}>
                     <IonRefresherContent></IonRefresherContent>
@@ -504,7 +488,7 @@ const Invoices: React.FC = () => {
                             </select>
                         </IonCol>
                     </IonRow>
-                   
+
                     <IonRow className='my-3'>
                         <button className='bg-pink text-white fs-13 fw-bold p-3 rounded-pill w-100'>{t("xem")}</button>
                     </IonRow>
