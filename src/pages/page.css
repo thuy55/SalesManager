@@ -1,0 +1,277 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap');
+
+body {
+    font-family: 'Poppins', sans-serif;
+}
+
+
+html,
+body,
+ion-app,
+ion-page,
+ion-content,
+ion-toolbar {
+    /* --color: black; */
+    height: 100%;
+    --background: linear-gradient(254deg,
+            rgba(0, 254, 218, 0.05) 0%,
+            rgba(215, 25, 108, 0.05) 22%,
+            rgba(15, 251, 235, 0.05) 37%,
+            rgba(50, 206, 227, 0.05) 50%,
+            rgba(252, 127, 34, 0.05) 75%,
+            rgba(15, 251, 244, 0.10) 100%) !important;
+}
+
+ion-card {
+    --background: var(--ion-card-background);
+    --color: var(--ion-card-color);
+}
+
+ion-alert {
+    --background: var(--ion-alert-background);
+}
+
+/* Trong global.scss hoặc component-specific SCSS */
+ion-header.shadow-none,
+ion-toolbar.shadow-none {
+    --box-shadow: none !important;
+    box-shadow: none !important;
+    border-bottom: none !important;
+    --border-width: 0 !important;
+}
+
+.bg-pink {
+    background-color: #f07 !important;
+}
+
+.block {
+    width: 100%;
+    height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+ion-modal {
+    --height: auto;
+    --border-radius: 25px;
+    --max-height: 95%;
+    
+}
+
+ion-modal .ion-backdrop {
+    backdrop-filter: blur(50px);
+    background-color: black;
+}
+
+.modal-content-scroll {
+    flex: 1;
+    overflow-y: auto;
+}
+
+.border-50 {
+    border-bottom: lightgrey solid 0.2px;
+}
+
+
+.text-pink {
+    color: #f07;
+}
+
+.fs-15 {
+    font-size: 15px;
+}
+
+.fs-13 {
+    font-size: 13px;
+}
+
+.fs-11 {
+    font-size: 11px;
+}
+
+.nav-pills .nav-link.active,
+.nav-pills .show>.nav-link {
+    color: white !important;
+    background-color: #f07 !important;
+    border-radius: 25px;
+    width: 100%;
+}
+
+.nav-pills .nav-link,
+.nav-pills .show>.nav-link {
+    /* --color: var(--ion-card-color); */
+
+    border-radius: 25px;
+    width: 100%;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+
+.bg-switch-box {
+    background-color: white;
+}
+
+.dark-mode .bg-switch-box {
+    background-color: rgba(24, 24, 24, 0.75);
+    color: white;
+}
+
+.bg-input-search {
+    background-color: white;
+    color: black;
+}
+
+.dark-mode .bg-input-search {
+    background-color: rgba(24, 24, 24, 0.75);
+    color: white;
+}
+
+.color-icon {
+    color: black;
+}
+
+.dark-mode .color-icon {
+    color: white;
+}
+
+.nav-link {
+    color: gray;
+}
+
+.footer-ios ion-toolbar:first-of-type {
+    --border-width: 0 !important;
+}
+
+a {
+    color: inherit !important;
+    text-decoration: none !important;
+}
+
+
+
+ion-segment-button.segment-button-checked {
+    background-color: #1677ff !important;
+    color: white !important;
+    border-radius: 12px;
+    box-shadow: none;
+    overflow: visible !important;
+}
+
+ion-segment-button {
+    background-color: transparent;
+    color: #1677ff;
+    border: 1px solid #1677ff;
+    border-radius: 12px;
+    margin: 4px;
+    overflow: visible !important;
+}
+
+ion-segment {
+    --indicator-color: transparent;
+    --background: transparent;
+    border-radius: 12px;
+    background-color: transparent;
+}
+
+ion-segment-button.segment-button-checked::part(native) {
+    color: white !important;
+    background: #1677ff !important;
+    border-radius: 12px;
+    padding: 10px;
+
+}
+
+.hide-scrollbar {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+
+
+/* styles.css */
+.card-container {
+    /* background: white; */
+    background: var(--ion-background-color);
+    border-radius: 20px;
+    padding: 20px;
+    text-align: center;
+    /* height: 450px; */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 100%;
+}
+
+/* Các slide bị đè */
+.swiper-slide:not(.swiper-slide-active) .card-container {
+    background-color: rgba(102, 102, 102, 0.623);
+    color: white;
+}
+
+
+.description {
+    min-height: calc(1.5em * 3);
+    line-height: 1.5em;
+    margin-top: 10px;
+}
+
+ion-checkbox {
+    --size: 22px;
+    /* --checkbox-background-checked: blue; */
+}
+
+ion-checkbox::part(container) {
+    border-radius: 6px;
+    border: 1px solid gainsboro;
+}
+
+ion-refresher,
+ion-refresher-content {
+    background: transparent !important;
+    --background: transparent !important;
+}
+
+ion-content::part(scroll) {
+    margin-top: -10px;
+    background: var(--background) !important;
+}
+
+.bg-input-chat {
+    background-color: rgba(255, 255, 255, 0.5);
+    color: black;
+}
+
+.dark-mode .bg-input-chat {
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+}
+
+ion-popover::part(content) {
+    width: 90%;
+    max-width: 90vw;
+    border-radius: 15px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    transform: translateY(-50%);
+}
+
+/* new */
+
+.limited-lines3 {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    /* Giới hạn 1 dòng */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: normal;
+    /* Đảm bảo không bị ảnh hưởng */
+    word-break: break-word;
+    /* Ngắt từ nếu quá dài */
+    max-width: 100%;
+    /* Đảm bảo không bị tràn */
+}

@@ -1,0 +1,44 @@
+/* For information on how to create your own theme, please see:
+http://ionicframework.com/docs/theming/ */
+/* src/theme/variables.css */
+/* body, html, ion-content, ion-label, ion-title, * {
+    font-family: 'Poppins', sans-serif !important;
+} */
+:root {
+    --ion-color-primary: #3880ff;
+    --ion-color-secondary: #3dc2ff;
+    --ion-color-tertiary: #5260ff;
+    --ion-color-success: #2dd36f;
+    --ion-color-warning: #ffc409;
+    --ion-color-danger: #eb445a;
+    --ion-color-light: #f4f5f8;
+    --ion-color-medium: #92949c;
+    --ion-color-dark: #222428;
+
+    --ion-background-color: #ffffff;
+    --ion-text-color: #000000;
+
+    --ion-card-background: rgba(255, 255, 255, 0.25);
+    --ion-card-color: black;
+    --ion-alert-background: white;
+
+    --ion-menu-background: rgba(255, 255, 255, 0.75);
+
+    /* footer */
+    --ion-footer-background: #eaf6fa;
+    --ion-footer-color: black;
+}
+
+body.dark {
+    --ion-background-color: #121212;
+    --ion-text-color: #ffffff;
+    --ion-card-background: rgba(0, 0, 0, 0.25);
+    --ion-card-color: white;
+
+    --ion-alert-background: rgba(0, 0, 0, 0.95);
+    --ion-menu-background: rgba(0, 0, 0, 0.75);
+    /* footer */
+    --ion-footer-background: #1b1b1b;
+    --ion-footer-color: white;
+
+}

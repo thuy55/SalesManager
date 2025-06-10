@@ -1,0 +1,20 @@
+.ripple {
+    position: fixed;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(99, 99, 99, 0.459);
+    transform: translate(-50%, -50%);
+    animation: ripple-animation 0.6s ease-out;
+    z-index: 9999;
+    pointer-events: none;
+  }
+  
+  @keyframes ripple-animation {
+    to {
+      width: 70px;
+      height: 70px;
+      opacity: 0;
+    }
+  }
+  
