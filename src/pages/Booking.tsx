@@ -18,6 +18,8 @@ type MenuItem = {
     image: string;
     quantity: number;
     price: number;
+    vat: number;
+    typeVAT: number;
 };
 
 const Menu: React.FC = () => {
@@ -42,7 +44,9 @@ const Menu: React.FC = () => {
             name: "Cơm chiên",
             content: "Cơm chiên dương châu hải sản tôm Cơm chiên dương châu",
             image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSymLAQV-vretS_sqeJndN9p9L9nXHCPFCKhw&s",
-            price: 120000
+            price: 120000,
+            vat: 10,
+            typeVAT: 1
 
         },
         {
@@ -50,42 +54,54 @@ const Menu: React.FC = () => {
             name: "Cơm chiên hải sản",
             content: "Cơm chiên dương châu hải sản tôm Cơm chiên dương châu",
             image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSymLAQV-vretS_sqeJndN9p9L9nXHCPFCKhw&s",
-            price: 120000
+            price: 120000,
+            vat: 10,
+            typeVAT: 2
         },
         {
             id: 3,
             name: "Lẩu hải sản",
             content: "Cơm chiên dương châu hải sản tôm Cơm chiên dương châu",
             image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSymLAQV-vretS_sqeJndN9p9L9nXHCPFCKhw&s",
-            price: 120000
+            price: 120000,
+            vat: 10,
+            typeVAT: 2
         },
         {
             id: 4,
             name: "Trái cây tươi mát",
             content: "Cơm chiên dương châu hải sản tôm Cơm chiên dương châu",
             image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSymLAQV-vretS_sqeJndN9p9L9nXHCPFCKhw&s",
-            price: 120000
+            price: 120000,
+            vat: 10,
+            typeVAT: 1
         },
         {
             id: 5,
             name: "Cơm chiên hải sản ssfsdfg",
             content: "Cơm chiên dương châu hải sản tôm Cơm chiên dương châu",
             image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSymLAQV-vretS_sqeJndN9p9L9nXHCPFCKhw&s",
-            price: 120000
+            price: 120000,
+            vat: 10,
+            typeVAT: 1
         },
         {
             id: 6,
             name: "Lẩu hải sản fdhgbfd",
             content: "Cơm chiên dương châu hải sản tôm Cơm chiên dương châu",
             image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSymLAQV-vretS_sqeJndN9p9L9nXHCPFCKhw&s",
-            price: 120000
+            price: 120000,
+            vat: 10,
+            typeVAT: 1
         },
         {
             id: 7,
             name: "Trái cây tươi mát fgsd",
             content: "Cơm chiên dương châu hải sản tôm Cơm chiên dương châu",
             image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSymLAQV-vretS_sqeJndN9p9L9nXHCPFCKhw&s",
-            price: 120000
+            price: 120000,
+            vat: 10,
+            typeVAT: 1
         }
     ]
     const [menuWithQty, setMenuWithQty] = useState<MenuItem[]>([]);
@@ -213,45 +229,73 @@ const Menu: React.FC = () => {
     const [total, setTotal] = useState<number>(0);
     const [discount, setdiscount] = useState<number>(0);
     const [serviceFee, setserviceFee] = useState<number>(0);
-    const [giamtien, setgiamtien] = useState<number>(0);
-    const [totalAmount, setTotalAmount] = useState<number>(0);
 
     const [provisional, setprovisional] = useState<number>(0);
     const [vat, setVat] = useState<number>(0);
     const [payment, setPayment] = useState<number>(0);
 
+    const [mucthue, setMucthue] = useState<number>(0);
+
     useEffect(() => {
+        tinhtien();
+        if (selectFood.length === 0) {
+            setPhidichvu(0);
+            setgiamgia(0);
+            setgiamgiatien(0);
+        }
+
+    }, [selectFood])
+
+    // typeVAT = 1 sau thuế, typeVAT = 2 trước thuế
+    const [phidichvu, setPhidichvu] = useState<number>(0);
+    const [giamgia, setgiamgia] = useState<number>(0);
+    const [giamgiatien, setgiamgiatien] = useState<number>(0);
+    const [note, setNote] = useState("");
+    const tinhtien = () => {
         const totalAmount = selectFood?.reduce((acc, food) => {
-            return acc + (food.price * food.quantity);
+            let total = 0;
+            if (food.typeVAT === 1) {
+                // total = food.price * food.quantity;
+                total = food.price / (1 + food.vat / 100);
+            } else if (food.typeVAT === 2) {
+                total = food.price * food.quantity;
+            }
+            return acc + total;
         }, 0);
-        const discount1 = totalAmount / 100 * 10;
-        const serviceFee1 = totalAmount / 100 * 5;
-        const tamtinh = totalAmount - discount1 - serviceFee - giamtien;
-        const thue = tamtinh / 100 * 10;
-        const thanhtoan = tamtinh - thue;
+
+        const tinhthue = selectFood?.reduce((acc, food) => {
+            let thue = 0;
+            if (food.typeVAT === 1) {
+                thue = (food.price / (1 + food.vat / 100) / 100 * food.vat) * food.quantity;
+                console.log("thuế sau ", thue);
+            } else if (food.typeVAT === 2) {
+                thue = (food.price / 100 * food.vat) * food.quantity;
+            }
+            return acc + thue;
+        }, 0);
+
+        const discount1 = totalAmount / 100 * giamgia;
+        const serviceFee1 = totalAmount / 100 * phidichvu;
+        const tamtinh = totalAmount - discount1 - serviceFee1 - giamgiatien;
+        // const thue = tamtinh / 100 * mucthue;
+        const thanhtoan = tamtinh + tinhthue;
         setTotal(totalAmount ?? 0);
         setdiscount(discount1);
         setserviceFee(serviceFee1);
         setprovisional(tamtinh);
-        setVat(thue);
+        setVat(tinhthue);
         setPayment(thanhtoan);
+    }
 
-    }, [selectFood])
 
-    const [phidichvu, setPhidichvu] = useState<number>(0);
-   
+    function chitietthem() {
+        tinhtien();
+        setIsModalOpenAddDetail(false)
+    }
 
-    const handleChange = (e : any) => {
-        let value = e.target.value;
-        // Loại bỏ số 0 đầu (trừ trường hợp nhập 0 duy nhất)
-        if (value.length > 1 && value.startsWith("0")) {
-            value = value.replace(/^0+/, "");
-        }
-        const number = Math.max(0, Math.min(100, Number(value)));
-        setPhidichvu(value === "" ? 0 : number);
-        console.log(123, number);
-        
-    };
+    function Payment(){
+        window.location.href="/booking-completed";
+    }
 
 
     return (
@@ -306,7 +350,7 @@ const Menu: React.FC = () => {
                                         <div className='text-pink fs-13'>{food.name}</div>
                                         <div className='text-secondary ' style={{ fontSize: "12px" }}>{food.content}</div>
                                         <IonRow className='d-flex justify-content-between align-items-center'>
-                                            <div className='text-dark fs-13'>{food.price} x {food.quantity}</div>
+                                            <div className='text-dark fs-13'>{food.price} x {food.quantity} {food.typeVAT == 2 && <span className='ms-2 text-muted'> chưa VAT {food.vat} %</span>}</div>
                                             <button onClick={() => removeFood(food.id)} className='bg-danger fs-11 p-1 text-white rounded-3 d-flex align-items-center'><IonIcon icon={trashOutline} className='me-1'></IonIcon> Xóa</button>
                                         </IonRow>
 
@@ -333,15 +377,15 @@ const Menu: React.FC = () => {
                         <div className='fs-15'>{total.toLocaleString()}</div>
                     </IonRow>
                     <IonRow className='fst-italic d-flex justify-content-between align-items-center ms-4 mt-1'>
-                        <div>Giảm giá 10% </div>
+                        <div>Giảm giá {giamgia}% </div>
                         <div>{discount.toLocaleString()}</div>
                     </IonRow>
                     <IonRow className='fst-italic d-flex justify-content-between align-items-center ms-4 mt-1'>
                         <div>Giảm tiền</div>
-                        <div>{giamtien.toLocaleString()}</div>
+                        <div>{giamgiatien.toLocaleString()}</div>
                     </IonRow>
                     <IonRow className='fst-italic d-flex justify-content-between align-items-center ms-4 mt-1'>
-                        <div>Phí dịch vụ 5%</div>
+                        <div>Phí dịch vụ {phidichvu}%</div>
                         <div>{serviceFee.toLocaleString()}</div>
                     </IonRow>
                     <IonRow className='fw-bold d-flex justify-content-between align-items-center text-primary mt-2'>
@@ -356,12 +400,13 @@ const Menu: React.FC = () => {
                         <div>Thanh toán</div>
                         <div className='fs-15'>{payment.toLocaleString()}</div>
                     </IonRow>
+
                     <IonRow className='d-flex align-items-center mt-2'>
                         <IonCol size='6'>
                             <button onClick={() => { setIsModalOpenAddDetail(true) }} className='p-3 rounded-pill bg-secondary d-flex justify-content-between align-items-center text-white fs-13 w-100'>Thêm chi tiết <IonIcon className='' style={{ fontSize: "18px" }} icon={chevronDownOutline}></IonIcon></button>
                         </IonCol>
                         <IonCol size='6'>
-                            <button className='p-3 fs-13 fw-bold bg-danger text-white rounded-pill w-100'>Thanh toán</button>
+                            <button className='p-3 fs-13 fw-bold bg-danger text-white rounded-pill w-100' onClick={()=>{Payment()}}>Thanh toán</button>
                         </IonCol>
                     </IonRow>
                 </IonCard>
@@ -513,7 +558,7 @@ const Menu: React.FC = () => {
                 <div className=' p-0 ' >
                     <div className='d-flex justify-content-between mx-3 py-3 fixed-header' >
                         <div className='fs-15 fw-bold'>Chi tiết thêm</div>
-                        <IonIcon onClick={() => setIsModalOpenAddDetail(false)} icon={closeOutline} style={{ fontSize: "25px" }}></IonIcon>
+                        <IonIcon onClick={() => { setIsModalOpenAddDetail(false); }} icon={closeOutline} style={{ fontSize: "25px" }}></IonIcon>
                     </div>
                     <IonGrid className='p-3 pt-0 overflowY h-100 fs-13' style={{
                         overflowY: "auto",
@@ -522,22 +567,37 @@ const Menu: React.FC = () => {
                         <IonRow className=' fs-13 mt-3'>Phí dịch vụ (%)</IonRow>
                         <IonRow className='mt-2'>
                             <input type='number' min="0" max="100" value={phidichvu}
-                                onChange={handleChange} className='p-3 rounded-4 fs-13 border border-0 shadow-sm bg-secondary bg-opacity-25  w-100' placeholder="Phí dịch vụ"></input>
+                                onChange={(e) => {
+                                    let value = Number(e.target.value);
+                                    if (value < 0) value = 0;
+                                    if (value > 100) value = 100;
+                                    setPhidichvu(value);
+                                    console.log("Phí dịch vụ", value);
+                                }} className='p-3 rounded-4 fs-13 border border-0 shadow-sm bg-secondary bg-opacity-25  w-100' placeholder="Phí dịch vụ"></input>
                         </IonRow>
                         <IonRow className=' fs-13 mt-3'>Giảm giá (%)</IonRow>
                         <IonRow className='mt-2'>
-                            <input type='number' min="0" max="100" className='p-3 rounded-4 fs-13 border border-0 shadow-sm bg-secondary bg-opacity-25  w-100' placeholder="Giảm giá"></input>
+                            <input type='number' min="0" max="100" value={giamgia} onChange={(e) => {
+                                let value = Number(e.target.value);
+                                if (value < 0) value = 0;
+                                if (value > 100) value = 100;
+                                setgiamgia(value);
+                                console.log("Phí dịch vụ", value);
+                            }} className='p-3 rounded-4 fs-13 border border-0 shadow-sm bg-secondary bg-opacity-25  w-100' placeholder="Giảm giá"></input>
                         </IonRow>
                         <IonRow className=' fs-13 mt-3'>Giảm giá tiền</IonRow>
                         <IonRow className='mt-2'>
-                            <input type='number' className='p-3 rounded-4 fs-13 border border-0 shadow-sm bg-secondary bg-opacity-25  w-100' placeholder="Giảm giá tiền"></input>
+                            <input type='number' value={giamgiatien} onChange={(e) => {
+                                let value = Number(e.target.value);
+                                setgiamgiatien(value);
+                            }} className='p-3 rounded-4 fs-13 border border-0 shadow-sm bg-secondary bg-opacity-25  w-100' placeholder="Giảm giá tiền"></input>
                         </IonRow>
                         <IonRow className=' fs-13 mt-3'>Ghi chú</IonRow>
                         <IonRow className='mt-2'>
-                            <textarea rows={5} className='p-3 rounded-4 fs-13 border border-0 shadow-sm bg-secondary bg-opacity-25  w-100' placeholder="Ghi chú"></textarea>
+                            <textarea rows={5} value={note} onChange={(e) => { setNote(e.target.value) }} className='p-3 rounded-4 fs-13 border border-0 shadow-sm bg-secondary bg-opacity-25  w-100' placeholder="Ghi chú"></textarea>
                         </IonRow>
                         <IonRow className=' mt-3'>
-                            <button className='rounded-pill p-3 bg-primary fs-13 fw-bold text-white w-100'>Hoàn thành </button>
+                            <button className='rounded-pill p-3 bg-primary fs-13 fw-bold text-white w-100' onClick={() => { chitietthem() }}>Hoàn thành </button>
                         </IonRow>
 
                     </IonGrid>

@@ -70,6 +70,7 @@ import Register from './pages/Register';
 import ConfirmRegister from './pages/ConfirmRegister';
 import ConfirmPassword from './pages/ConfirmPassword';
 import Diagram from './pages/Diagram';
+import Revenue from './pages/Revenue';
 
 setupIonicReact();
 
@@ -111,6 +112,7 @@ const TabsWithRoutes: React.FC = () => {
 
           <Route path="/menu" component={Menu} exact />
           <Route path="/diagram" component={Diagram} exact />
+          <Route path="/revenue" component={Revenue} exact />
           <Redirect exact from="/" to="/home" />
         </IonRouterOutlet>
         <IonHeader slot='top' style={{ backdropFilter: "blur(50px)" }}>
@@ -152,7 +154,7 @@ const TabsWithRoutes: React.FC = () => {
               <IonIcon icon={calendarNumberOutline} />
               <IonLabel>Hóa đơn</IonLabel>
             </IonTabButton>
-            <IonTabButton tab="tab5" href="/invoices" className={` ${currentPath === '/invoices' ? 'tab-selected' : 'ion-tab-button-custom'}`}>
+            <IonTabButton tab="tab5" href="/revenue" className={` ${currentPath === '/invoices' ? 'tab-selected' : 'ion-tab-button-custom'}`}>
               <IonIcon icon={cashOutline} />
               <IonLabel>Doanh số</IonLabel>
             </IonTabButton>

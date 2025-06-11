@@ -13,13 +13,13 @@ ion-content,
 ion-toolbar {
     /* --color: black; */
     height: 100%;
-    --background: linear-gradient(254deg,
+    /* --background: linear-gradient(254deg,
             rgba(0, 254, 218, 0.05) 0%,
             rgba(215, 25, 108, 0.05) 22%,
             rgba(15, 251, 235, 0.05) 37%,
             rgba(50, 206, 227, 0.05) 50%,
             rgba(252, 127, 34, 0.05) 75%,
-            rgba(15, 251, 244, 0.10) 100%) !important;
+            rgba(15, 251, 244, 0.10) 100%) !important; */
 }
 
 ion-card {

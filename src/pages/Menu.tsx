@@ -190,6 +190,18 @@ const Menu: React.FC = () => {
                             <IonRow className='mt-2'>
                                 <input type='text' className='p-3 rounded-4 fs-13 border border-0 shadow-sm bg-secondary bg-opacity-25  w-100' placeholder="Giá"></input>
                             </IonRow>
+                            <IonRow className=' fs-13 fw-bold mt-3'>VAT <span className='text-danger ms-1'>(*)</span></IonRow>
+                            <IonRow className='mt-2'>
+                                <IonCol size='6'>
+                                    <input type='number' className='p-3 rounded-4 fs-13 border border-0 shadow-sm bg-secondary bg-opacity-25  w-100' placeholder="VAT"></input>
+                                </IonCol>
+                                <IonCol size='6'>
+                                    <select className='p-3 rounded-4 fs-13 border border-0 shadow-sm bg-secondary bg-opacity-25  w-100'>
+                                        <option value={1}>Giá bán sau thuế</option>
+                                        <option value={2}>Giá bán trước thuế</option>
+                                    </select>
+                                </IonCol>
+                            </IonRow>
                             <IonRow className=' fs-13 fw-bold mt-3'>Hình ảnh <span className='text-danger ms-1'>(*)</span></IonRow>
                             <IonCard className='m-0 mt-3 p-3 rounded-4 bg-secondary bg-opacity-25 shadow-sm border border-1'>
                                 <div style={{ cursor: "pointer" }}>
@@ -250,11 +262,10 @@ const Menu: React.FC = () => {
                         <div className='fs-15 fw-bold'>Thêm sản phẩm</div>
                         <IonIcon onClick={() => setIsModalOpenAddProduct(false)} icon={closeOutline} style={{ fontSize: "25px" }}></IonIcon>
                     </div>
-                    <IonGrid className='p-3 overflowY h-100 fs-13' style={{
+                    <IonGrid className='p-3 px-4 overflowY h-100 fs-13' style={{
                         overflowY: "auto",
                         maxHeight: "80vh"
                     }}>
-                        <IonCard className='m-0  p-3 rounded-4 fs-13 shadow-sm '>
                             <div className='fw-bold'>Thông tin sản phẩm</div>
                             <IonRow className=' fs-13 fw-bold mt-3'>{t("ten")} <span className='text-danger ms-1'>(*)</span></IonRow>
                             <IonRow className='mt-2'>
@@ -271,6 +282,18 @@ const Menu: React.FC = () => {
                             <IonRow className=' fs-13 fw-bold mt-3'>Giá <span className='text-danger ms-1'>(*)</span></IonRow>
                             <IonRow className='mt-2'>
                                 <input type='text' className='p-3 rounded-4 fs-13 border border-0 shadow-sm bg-secondary bg-opacity-25  w-100' placeholder="Giá"></input>
+                            </IonRow>
+                            <IonRow className=' fs-13 fw-bold mt-3'>VAT <span className='text-danger ms-1'>(*)</span></IonRow>
+                            <IonRow className='mt-2'>
+                                <IonCol size='6'>
+                                    <input type='number' className='p-3 rounded-4 fs-13 border border-0 shadow-sm bg-secondary bg-opacity-25  w-100' placeholder="VAT"></input>
+                                </IonCol>
+                                <IonCol size='6'>
+                                    <select className='p-3 rounded-4 fs-13 border border-0 shadow-sm bg-secondary bg-opacity-25  w-100'>
+                                        <option value={1}>Giá bán sau thuế</option>
+                                        <option value={2}>Giá bán trước thuế</option>
+                                    </select>
+                                </IonCol>
                             </IonRow>
                             <IonRow className=' fs-13 fw-bold mt-3'>Hình ảnh <span className='text-danger ms-1'>(*)</span></IonRow>
                             <IonCard className='m-0 mt-3 p-3 rounded-4 bg-secondary bg-opacity-25 shadow-sm border border-1'>
@@ -312,7 +335,6 @@ const Menu: React.FC = () => {
                                     />
                                 </div>
                             </IonCard>
-                        </IonCard>
                     </IonGrid>
                     <IonRow className='d-flex align-items-center mb-2 mt-3 '>
                         <IonCol size='6'>

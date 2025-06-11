@@ -161,12 +161,12 @@ const Home: React.FC = () => {
                             </div>
                         </IonCol>
                         <IonCol size='3' className='d-flex justify-content-center'>
-                            <Link to='/brand' onClick={() => setIsModalOpenSee(false)}>
+                             <div onClick={() => { handleClick("/revenue") }}>
                                 <div className='rounded-circle bg-switch-box shadow-sm d-flex justify-content-center align-items-center' style={{ width: "60px", height: "60px" }}>
                                     <IonIcon icon={businessOutline} style={{ fontSize: "20px" }} className='text-pink'></IonIcon>
                                 </div>
                                 <div className='fs-13 mt-1 text-center'>Hóa đơn</div>
-                            </Link>
+                            </div>
                         </IonCol>
                     </IonRow>
                     <IonRow className='mt-2'>
