@@ -93,7 +93,7 @@ ion-modal .ion-backdrop {
 .nav-pills .nav-link.active,
 .nav-pills .show>.nav-link {
     color: white !important;
-    background-color: #f07 !important;
+    background-color: rgb(216, 82, 82) !important;
     border-radius: 25px;
     width: 100%;
 }

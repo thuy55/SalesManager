@@ -31,11 +31,16 @@ const BookingCompleted: React.FC = () => {
                     <IonRefresherContent></IonRefresherContent>
                 </IonRefresher>
                 <IonGrid className='p-3 pt-4'>
-                    <IonRow className='d-flex align-items-center '>
+                    <IonRow className='d-flex align-items-center justify-content-between'>
+                        <div  className='d-flex align-items-center'>
+                            <IonIcon icon={checkmarkCircleOutline} color='success' style={{ fontSize: "25px" }} />
+                            <div className=' fw-bold ms-2' style={{ fontSize: "17px" }}>Hóa đơn</div>
+                        </div>
+                        <div className='d-flex align-items-center'>
+                            <button className='p-2 px-4 text-white rounded-3 bg-primary fs-13 fw-bold'>IN</button>
+                            <button className='p-2 text-white rounded-3 bg-info fs-13 fw-bold ms-3'>Xuất HD</button>
+                        </div>
 
-                        <IonIcon icon={checkmarkCircleOutline} color='success' style={{ fontSize: "25px" }} />
-
-                        <div className=' fw-bold ms-2' style={{ fontSize: "17px" }}>{t("dat-ban-thanh-cong")}</div>
                     </IonRow>
                     <IonList className='px-3 pt-4'>
 

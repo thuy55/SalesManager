@@ -16,6 +16,7 @@ const Revenue: React.FC = () => {
     const history = useHistory();
     const [isModalOpenSearchMonth, setIsModalOpenSearchMonth] = useState(false);
     const [isModalOpenSearchDate, setIsModalOpenSearchDate] = useState(false);
+    const [isModalOpenSearchWeek, setIsModalOpenSearchWeek] = useState(false);
     function handleRefresh(event: CustomEvent<RefresherEventDetail>) {
         setTimeout(() => {
             // Any calls to load data go here
@@ -56,24 +57,49 @@ const Revenue: React.FC = () => {
         // setCalendarDays(days);
     }
 
+    const [isModalOpenDetail, setIsModalOpenDetail] = useState(false);
+
+    //search week
+    const [selectedDaysearchweek, setSelectedDaysearchweek] = useState<number>(moment().date());
+    const [selectedMonthsearchweek, setSelectedMonthsearchweek] = useState<number>(moment().month()); // 0 - 11
+    const [selectedYearsearchweek, setSelectedYearsearchweek] = useState<number>(moment().year());
+    const [startWeek, setStartWeek] = useState<string>(moment().startOf('isoWeek').format('DD/MM/YYYY'));
+    const [endWeek, setEndWeek] = useState<string>(moment().endOf('isoWeek').format('DD/MM/YYYY'));
+    function handleSearchWeek() {
+        const searchDate = moment()
+            .year(selectedYearsearchweek)
+            .month(selectedMonthsearchweek)
+            .date(selectedDaysearchweek);
+        const startOfWeek = searchDate.clone().startOf('isoWeek'); // Thứ 2
+        const endOfWeek = searchDate.clone().endOf('isoWeek');
+
+        setStartWeek(startOfWeek.format('DD/MM/YYYY'));
+        setEndWeek(endOfWeek.format('DD/MM/YYYY'))
+    }
+
+    //search date
+    const [selectedDaysearchDate, setSelectedDaysearchDate] = useState<number>(moment().date());
+    const [selectedMonthsearchDate, setSelectedMonthsearchDate] = useState<number>(moment().month()); // 0 - 11
+    const [selectedYearsearchDate, setSelectedYearsearchDate] = useState<number>(moment().year());
+    const [startDate, setStartDate] = useState<string>(moment().format('DD/MM/YYYY'));
+    function handleSearchDate() {
+        const searchDate = moment()
+            .year(selectedYearsearchDate)
+            .month(selectedMonthsearchDate)
+            .date(selectedDaysearchDate);
+        const startOfWeek = searchDate.clone().startOf('isoWeek'); // Thứ 2
+        const endOfWeek = searchDate.clone().endOf('isoWeek');
+
+        setStartWeek(startOfWeek.format('DD/MM/YYYY'));
+        setEndWeek(endOfWeek.format('DD/MM/YYYY'))
+    }
+
+
+
+
+
     return (
         <IonPage>
-            <IonHeader style={{ backdropFilter: "blur(50px)" }}>
-                <IonToolbar className='shadow-none border border-0'>
-                    <IonRow className='d-flex justify-content-between align-items-center p-1'>
-                        <img src='../image/happy-corp-logo.png' alt='logo' className='' style={{ width: "70px" }}></img>
-                        <div className='d-flex align-items-center'>
-                            <button onClick={() => present()} className='rounded-circle p-2 bg-switch-box' style={{ width: "35px", height: "35px" }}> <IonIcon icon={businessOutline} size='15px'></IonIcon></button>
-                            <Link to='/user-notification'>
-                                <button className='rounded-circle p-2 bg-switch-box ms-2' style={{ width: "35px", height: "35px" }}> <IonIcon icon={notificationsOutline} size='15px'></IonIcon></button>
-                            </Link>
-                            <IonMenuToggle menu="end" autoHide={false}>
-                                <img src='https://static-cse.canva.com/blob/1992462/1600w-vkBvE1d_xYA.jpg' alt='avatar' className='rounded-circle ms-2' style={{ width: "40px", height: "40px" }}></img>
-                            </IonMenuToggle>
-                        </div>
-                    </IonRow>
-                </IonToolbar>
-            </IonHeader>
             <IonContent fullscreen className='page-background'>
                 <IonRefresher slot="fixed" onIonRefresh={handleRefresh}>
                     <IonRefresherContent></IonRefresherContent>
@@ -83,7 +109,7 @@ const Revenue: React.FC = () => {
                         <button className='text-center bg-none rounded-circle me-2' style={{ width: "40px", height: "40px" }} onClick={() => history.goBack()}>
                             <IonIcon icon={chevronBackOutline} color='dark' style={{ fontSize: "22px" }} />
                         </button>
-                        <div className=' fw-bold ' style={{ fontSize: "17px" }}>{t("lich-su")}</div>
+                        <div className=' fw-bold ' style={{ fontSize: "17px" }}>Doanh số</div>
                     </IonRow>
                     <div className="card-header mt-3 px-3">
                         <ul
@@ -177,79 +203,22 @@ const Revenue: React.FC = () => {
                                     </button>
                                 </IonCol>
                             </IonRow>
-                            <IonRow>
-                                <IonCol size='4'>
-                                    <IonCard className='shadow-sm rounded-4 p-2 m-0 text-pink text-center'>
-                                        <div className='fs-1 fw-bold'>5</div>
-                                        <div className='fs-13'>{t("tong-booking")}</div>
-                                    </IonCard>
-                                </IonCol>
-                                <IonCol size='4'>
-                                    <IonCard className='shadow-sm rounded-4 p-2 m-0 text-success text-center'>
-                                        <div className='fs-1 fw-bold'>5</div>
-                                        <div className='fs-13'>{t("da-thanh-toan")}</div>
-                                    </IonCard>
-                                </IonCol>
-                                <IonCol size='4'>
-                                    <IonCard className='shadow-sm rounded-4 p-2 m-0 text-secondary text-center'>
-                                        <div className='fs-1 fw-bold'>5</div>
-                                        <div className='fs-13'>{t("da-huy")}</div>
-                                    </IonCard>
-                                </IonCol>
-                            </IonRow>
-                            <div className="d-flex justify-content-between align-items-center gap-3 mt-3 flex-wrap">
-                                <div className="d-flex align-items-center gap-1">
-                                    <span className="badge bg-primary mb-1" style={{ fontSize: "10px" }}> </span>
-                                    <span className='fs-13'><span className='fw-bold'>1</span> Nhật khách</span>
-                                </div>
-                                <div className="d-flex align-items-center gap-1">
-                                    <span className={`badge bg-success mb-1`} style={{ fontSize: "10px" }}> </span>
-                                    <span className='fs-13'><span className='fw-bold'>1</span> Thanh toán</span>
-                                </div>
-                                <div className="d-flex align-items-center gap-1">
-                                    <span className={`badge bg-warning mb-1`} style={{ fontSize: "10px" }}> </span>
-                                    <span className='fs-13'><span className='fw-bold'>1</span> Đợi khách</span>
-                                </div>
-                            </div>
-                            <div className="d-flex justify-content-between align-items-center gap-3 mt-2 flex-wrap">
-                                <div className="d-flex align-items-center gap-1">
-                                    <span className="badge bg-info mb-1" style={{ fontSize: "10px" }}> </span>
-                                    <span className='fs-13'><span className='fw-bold'>1</span> Chờ duyệt</span>
-                                </div>
-                                <div className="d-flex align-items-center gap-1">
-                                    <span className={`badge bg-danger mb-1`} style={{ fontSize: "10px" }}> </span>
-                                    <span className='fs-13'><span className='fw-bold'>1</span> Không duyệt</span>
-                                </div>
-                                <div className="d-flex align-items-center gap-1">
-                                    <span className={`badge bg-secondary mb-1`} style={{ fontSize: "10px" }}> </span>
-                                    <span className='fs-13'><span className='fw-bold'>1</span> Đã hủy</span>
-                                </div>
-                            </div>
-
-                            <IonCard className="m-0 p-3 rounded-4 shadow-sm mt-3">
-                                <div className="row d-flex align-items-center">
-                                    <div className="badge bg-primary col-2 ms-2" style={{ width: "30px", height: "30px" }}> </div>
-                                    <div className='ms-2 fs-13 col-10 px-0'>
-                                        <div className='d-flex justify-content-between fw-bold '>
-                                            <div className=''>Mr Wong</div>
-                                            <div className='fs-15'>12.000.000 đ</div>
-                                        </div>
-                                        <div style={{ fontSize: "12px" }}>18:23 29/04/2025</div>
-                                    </div>
-                                </div>
+                            <IonCard className='shadow-sm rounded-4 p-3 bg-danger bg-opacity-10 m-2 text-danger text-center'>
+                                <div className='fs-13'>Tổng doanh thu</div>
+                                <div className='fs-1 fw-bold'>5.000.000</div>
                             </IonCard>
-                            <IonCard className="m-0 p-3 rounded-4 shadow-sm mt-3">
-                                <div className="row d-flex align-items-center ">
-                                    <div className="badge bg-primary col-2 ms-2" style={{ width: "30px", height: "30px" }}> </div>
-                                    <div className='ms-2 fs-13 col-10 px-0'>
-                                        <div className='d-flex justify-content-between fw-bold '>
-                                            <div className=''>Mr Wong</div>
-                                            <div className='fs-15'>12.000.000 đ</div>
-                                        </div>
-                                        <div style={{ fontSize: "12px" }}>18:23 29/04/2025</div>
-                                    </div>
-                                </div>
-                            </IonCard>
+                            <IonGrid className='p-2'>
+                                <IonCard className='shadow-none rounded-4 border p-2 m-0' onClick={() => { setIsModalOpenDetail(true) }}>
+                                    <IonRow className='d-flex justify-content-between align-items-center'>
+                                        <span className='bg-success text-white p-1 py-0 rounded-pill px-2' style={{ fontSize: "11px" }}>Đã thanh toán</span>
+                                        <div className='fs-13 text-muted'>Ngày: 12/06/2025 14:00:00</div>
+                                    </IonRow>
+                                    <IonRow className='d-flex justify-content-between align-items-center mt-2'>
+                                        <div className='fs-13 '>5 món</div>
+                                        <div className='fs-13 fw-bold'>Tổng: 25.000.000 vnd</div>
+                                    </IonRow>
+                                </IonCard>
+                            </IonGrid>
                         </div>
                         <div className="tab-pane " id="nav-week">
                             <IonRow className='d-flex align-items-center'>
@@ -259,16 +228,16 @@ const Revenue: React.FC = () => {
                                     </button>
                                 </IonCol>
                                 <IonCol size='8'>
-                                    <div className="d-flex align-items-center p-2 bg-input-search rounded-pill  w-100 fs-13" style={{ height: '45px' }}>
+                                    <div onClick={() => setIsModalOpenSearchWeek (true)} className="d-flex align-items-center p-2 bg-input-search rounded-pill  w-100 fs-13" style={{ height: '45px' }}>
                                         <input
-                                            type="text"
+                                            type="text" readOnly
                                             className="form-control bg-input-search border-0 shadow-none fs-13 fw-bold"
                                             placeholder={t("tim-kiem")}
                                             style={{
                                                 flex: 1,
                                                 borderRadius: '50px',
                                             }}
-                                            value="05/05/2025 - 11/05/2025"
+                                            value={`${startWeek} - ${endWeek}`}
                                         />
                                         <button id="open-modal-search-date-home"
                                             className=" d-flex justify-content-center align-items-center me-0"
@@ -289,81 +258,22 @@ const Revenue: React.FC = () => {
                                     </button>
                                 </IonCol>
                             </IonRow>
-                            <IonRow>
-                                <IonCol size='4'>
-                                    <IonCard className='shadow-sm rounded-4 p-2 m-0 text-pink text-center'>
-                                        <div className='fs-1 fw-bold'>5</div>
-                                        <div className='fs-13'>{t("tong-booking")}</div>
-                                    </IonCard>
-                                </IonCol>
-                                <IonCol size='4'>
-                                    <IonCard className='shadow-sm rounded-4 p-2 m-0 text-success text-center'>
-                                        <div className='fs-1 fw-bold'>5</div>
-                                        <div className='fs-13'>{t("da-thanh-toan")}</div>
-                                    </IonCard>
-                                </IonCol>
-                                <IonCol size='4'>
-                                    <IonCard className='shadow-sm rounded-4 p-2 m-0 text-secondary text-center'>
-                                        <div className='fs-1 fw-bold'>5</div>
-                                        <div className='fs-13'>{t("da-huy")}</div>
-                                    </IonCard>
-                                </IonCol>
-                            </IonRow>
-                           
-
-                            <div className="d-flex justify-content-between align-items-center gap-3 mt-3 flex-wrap">
-                                <div className="d-flex align-items-center gap-1">
-                                    <span className="badge bg-primary mb-1" style={{ fontSize: "10px" }}> </span>
-                                    <span className='fs-13'><span className='fw-bold'>1</span> Nhật khách</span>
-                                </div>
-                                <div className="d-flex align-items-center gap-1">
-                                    <span className={`badge bg-success mb-1`} style={{ fontSize: "10px" }}> </span>
-                                    <span className='fs-13'><span className='fw-bold'>1</span> Thanh toán</span>
-                                </div>
-                                <div className="d-flex align-items-center gap-1">
-                                    <span className={`badge bg-warning mb-1`} style={{ fontSize: "10px" }}> </span>
-                                    <span className='fs-13'><span className='fw-bold'>1</span> Đợi khách</span>
-                                </div>
-                            </div>
-                            <div className="d-flex justify-content-between align-items-center gap-3 mt-2 flex-wrap">
-                                <div className="d-flex align-items-center gap-1">
-                                    <span className="badge bg-info mb-1" style={{ fontSize: "10px" }}> </span>
-                                    <span className='fs-13'><span className='fw-bold'>1</span> Chờ duyệt</span>
-                                </div>
-                                <div className="d-flex align-items-center gap-1">
-                                    <span className={`badge bg-danger mb-1`} style={{ fontSize: "10px" }}> </span>
-                                    <span className='fs-13'><span className='fw-bold'>1</span> Không duyệt</span>
-                                </div>
-                                <div className="d-flex align-items-center gap-1">
-                                    <span className={`badge bg-secondary mb-1`} style={{ fontSize: "10px" }}> </span>
-                                    <span className='fs-13'><span className='fw-bold'>1</span> Đã hủy</span>
-                                </div>
-                            </div>
-
-                            <IonCard className="m-0 p-3 rounded-4 shadow-sm mt-3">
-                                <div className="row d-flex align-items-center ">
-                                    <div className="badge bg-primary col-2 ms-2" style={{ width: "30px", height: "30px" }}> </div>
-                                    <div className='ms-2 fs-13 col-10 px-0'>
-                                        <div className='d-flex justify-content-between fw-bold '>
-                                            <div className=''>Mr Wong</div>
-                                            <div className='fs-15'>12.000.000 đ</div>
-                                        </div>
-                                        <div style={{ fontSize: "12px" }}>18:23 29/04/2025</div>
-                                    </div>
-                                </div>
+                            <IonCard className='shadow-sm rounded-4 p-3 bg-danger bg-opacity-10 m-2 text-danger text-center'>
+                                <div className='fs-13'>Tổng doanh thu</div>
+                                <div className='fs-1 fw-bold'>5.000.000</div>
                             </IonCard>
-                            <IonCard className="m-0 p-3 rounded-4 shadow-sm mt-3">
-                                <div className="row d-flex align-items-center">
-                                    <div className="badge bg-primary col-2 ms-2" style={{ width: "30px", height: "30px" }}> </div>
-                                    <div className='ms-2 fs-13 col-10 px-0'>
-                                        <div className='d-flex justify-content-between fw-bold '>
-                                            <div className=''>Mr Wong</div>
-                                            <div className='fs-15'>12.000.000 đ</div>
-                                        </div>
-                                        <div style={{ fontSize: "12px" }}>18:23 29/04/2025</div>
-                                    </div>
-                                </div>
-                            </IonCard>
+                            <IonGrid className='p-2'>
+                                <IonCard className='shadow-none rounded-4 border p-2 m-0' onClick={() => { setIsModalOpenDetail(true) }}>
+                                    <IonRow className='d-flex justify-content-between align-items-center'>
+                                        <span className='bg-success text-white p-1 py-0 rounded-pill px-2' style={{ fontSize: "11px" }}>Đã thanh toán</span>
+                                        <div className='fs-13 text-muted'>Ngày: 12/06/2025 14:00:00</div>
+                                    </IonRow>
+                                    <IonRow className='d-flex justify-content-between align-items-center mt-2'>
+                                        <div className='fs-13 '>5 món</div>
+                                        <div className='fs-13 fw-bold'>Tổng: 25.000.000 vnd</div>
+                                    </IonRow>
+                                </IonCard>
+                            </IonGrid>
                         </div>
                         <div className="tab-pane " id="nav-month">
                             <IonRow className='d-flex align-items-center'>
@@ -403,84 +313,22 @@ const Revenue: React.FC = () => {
                                     </button>
                                 </IonCol>
                             </IonRow>
-                            <IonRow>
-                                <IonCol size='4'>
-                                    <IonCard className='shadow-sm rounded-4 p-2 m-0 text-pink text-center'>
-                                        <div className='fs-1 fw-bold'>5</div>
-                                        <div className='fs-13'>{t("tong-booking")}</div>
-                                    </IonCard>
-                                </IonCol>
-                                <IonCol size='4'>
-                                    <IonCard className='shadow-sm rounded-4 p-2 m-0 text-success text-center'>
-                                        <div className='fs-1 fw-bold'>5</div>
-                                        <div className='fs-13'>{t("da-thanh-toan")}</div>
-                                    </IonCard>
-                                </IonCol>
-                                <IonCol size='4'>
-                                    <IonCard className='shadow-sm rounded-4 p-2 m-0 text-secondary text-center'>
-                                        <div className='fs-1 fw-bold'>5</div>
-                                        <div className='fs-13'>{t("da-huy")}</div>
-                                    </IonCard>
-                                </IonCol>
-                            </IonRow>
-
-                            <div className="calendar p-2 rounded-4 my-2 shadow-sm" style={{ backgroundColor: '#fff' }}>
-                               
-
-                            </div>
-                            <div className="d-flex justify-content-between align-items-center gap-3 mt-3 flex-wrap">
-                                <div className="d-flex align-items-center gap-1">
-                                    <span className="badge bg-primary mb-1" style={{ fontSize: "10px" }}> </span>
-                                    <span className='fs-13'><span className='fw-bold'>1</span> Nhật khách</span>
-                                </div>
-                                <div className="d-flex align-items-center gap-1">
-                                    <span className={`badge bg-success mb-1`} style={{ fontSize: "10px" }}> </span>
-                                    <span className='fs-13'><span className='fw-bold'>1</span> Thanh toán</span>
-                                </div>
-                                <div className="d-flex align-items-center gap-1">
-                                    <span className={`badge bg-warning mb-1`} style={{ fontSize: "10px" }}> </span>
-                                    <span className='fs-13'><span className='fw-bold'>1</span> Đợi khách</span>
-                                </div>
-                            </div>
-                            <div className="d-flex justify-content-between align-items-center gap-3 mt-2 flex-wrap">
-                                <div className="d-flex align-items-center gap-1">
-                                    <span className="badge bg-info mb-1" style={{ fontSize: "10px" }}> </span>
-                                    <span className='fs-13'><span className='fw-bold'>1</span> Chờ duyệt</span>
-                                </div>
-                                <div className="d-flex align-items-center gap-1">
-                                    <span className={`badge bg-danger mb-1`} style={{ fontSize: "10px" }}> </span>
-                                    <span className='fs-13'><span className='fw-bold'>1</span> Không duyệt</span>
-                                </div>
-                                <div className="d-flex align-items-center gap-1">
-                                    <span className={`badge bg-secondary mb-1`} style={{ fontSize: "10px" }}> </span>
-                                    <span className='fs-13'><span className='fw-bold'>1</span> Đã hủy</span>
-                                </div>
-                            </div>
-
-                            <IonCard className="m-0 p-3 rounded-4 shadow-sm mt-3">
-                                <div className="row d-flex align-items-center ">
-                                    <div className="badge bg-primary col-2 ms-2" style={{ width: "30px", height: "30px" }}> </div>
-                                    <div className='ms-2 fs-13 col-10 px-0'>
-                                        <div className='d-flex justify-content-between fw-bold '>
-                                            <div className=''>Mr Wong</div>
-                                            <div className='fs-15'>12.000.000 đ</div>
-                                        </div>
-                                        <div style={{ fontSize: "12px" }}>18:23 29/04/2025</div>
-                                    </div>
-                                </div>
+                            <IonCard className='shadow-sm rounded-4 p-3 bg-danger bg-opacity-10 m-2 text-danger text-center'>
+                                <div className='fs-13'>Tổng doanh thu</div>
+                                <div className='fs-1 fw-bold'>5.000.000</div>
                             </IonCard>
-                            <IonCard className="m-0 p-3 rounded-4 shadow-sm mt-3">
-                                <div className="row d-flex align-items-center">
-                                    <div className="badge bg-primary col-2 ms-2" style={{ width: "30px", height: "30px" }}> </div>
-                                    <div className='ms-2 fs-13 col-10 px-0'>
-                                        <div className='d-flex justify-content-between fw-bold '>
-                                            <div className=''>Mr Wong</div>
-                                            <div className='fs-15'>12.000.000 đ</div>
-                                        </div>
-                                        <div style={{ fontSize: "12px" }}>18:23 29/04/2025</div>
-                                    </div>
-                                </div>
-                            </IonCard>
+                            <IonGrid className='p-2'>
+                                <IonCard className='shadow-none rounded-4 border p-2 m-0' onClick={() => { setIsModalOpenDetail(true) }}>
+                                    <IonRow className='d-flex justify-content-between align-items-center'>
+                                        <span className='bg-success text-white p-1 py-0 rounded-pill px-2' style={{ fontSize: "11px" }}>Đã thanh toán</span>
+                                        <div className='fs-13 text-muted'>Ngày: 12/06/2025 14:00:00</div>
+                                    </IonRow>
+                                    <IonRow className='d-flex justify-content-between align-items-center mt-2'>
+                                        <div className='fs-13 '>5 món</div>
+                                        <div className='fs-13 fw-bold'>Tổng: 25.000.000 vnd</div>
+                                    </IonRow>
+                                </IonCard>
+                            </IonGrid>
                         </div>
                     </form>
 
@@ -490,7 +338,7 @@ const Revenue: React.FC = () => {
             <IonModal isOpen={isModalOpenSearchMonth} onDidDismiss={() => setIsModalOpenSearchMonth(false)} initialBreakpoint={1} breakpoints={[0, 1]}>
                 <div className='d-flex justify-content-between mx-3 mt-3' >
                     <div className='fs-15 '>{t("tim-lich")}</div>
-                    <IonIcon onClick={() => dismiss()} icon={closeOutline} style={{ fontSize: "25px" }}></IonIcon>
+                    <IonIcon onClick={() => setIsModalOpenSearchMonth(false)} icon={closeOutline} style={{ fontSize: "25px" }}></IonIcon>
                 </div>
                 <IonGrid className='p-3 m-0'>
                     <IonRow>
@@ -522,64 +370,171 @@ const Revenue: React.FC = () => {
             <IonModal isOpen={isModalOpenSearchDate} onDidDismiss={() => { setIsModalOpenSearchDate(false) }} initialBreakpoint={1} breakpoints={[0, 1]}>
                 <div className='d-flex justify-content-between mx-3 mt-3' >
                     <div className='fs-15 '>{t("tim-lich")}</div>
-                    <IonIcon onClick={() => dismiss()} icon={closeOutline} style={{ fontSize: "25px" }}></IonIcon>
+                    <IonIcon onClick={() => setIsModalOpenSearchDate(false)} icon={closeOutline} style={{ fontSize: "25px" }}></IonIcon>
                 </div>
                 <IonGrid className='p-3 m-0'>
                     <IonRow>
                         <IonCol size='4'>
-                            <select className='p-2 rounded-4 fs-13 border border-1 w-100 bg-light' >
-                                <option value={1}>1</option>
-                                <option value={2}>2</option>
-                                <option value={3}>3</option>
-                                <option value={4}>4</option>
-                                <option value={5}>5</option>
-                                <option value={6}>6</option>
-                                <option value={7}>7</option>
-                                <option value={8}>8</option>
-                                <option value={9}>9</option>
-                                <option value={10}>10</option>
-                                <option value={11}>11</option>
-                                <option value={12}>12</option>
+
+                            <select
+                                value={selectedDaysearchweek}
+                                onChange={(e) => setSelectedDaysearchweek(parseInt(e.target.value))}
+                                className='p-2 rounded-4 fs-13 border border-1 w-100 bg-light'
+                            >
+                                {Array.from({ length: 31 }, (_, i) => i + 1).map(day => (
+                                    <option key={day} value={day}>
+                                        {day}
+                                    </option>
+                                ))}
                             </select>
 
                         </IonCol>
                         <IonCol size='4'>
-                            <select className='p-2 rounded-4 fs-13 border border-1 w-100 bg-light' >
-                                <option value={1}>January</option>
-                                <option value={2}>February</option>
-                                <option value={3}>March</option>
-                                <option value={4}>April</option>
-                                <option value={5}>May</option>
-                                <option value={6}>June</option>
-                                <option value={7}>Jury</option>
-                                <option value={8}>August</option>
-                                <option value={9}>September</option>
-                                <option value={10}>Octoder</option>
-                                <option value={11}>November</option>
-                                <option value={12}>December</option>
+                            <select className='p-2 rounded-4 fs-13 border border-1 w-100 bg-light' value={selectedMonthsearchweek}
+                                onChange={(e) => setSelectedMonthsearchweek(parseInt(e.target.value))}>
+                                {moment.months().map((month, idx) => (
+                                    <option key={idx} value={idx}>{month}</option>
+                                ))}
                             </select>
 
                         </IonCol>
                         <IonCol size='4'>
-                            <select className='p-2 rounded-4 fs-13 border border-1 w-100' >
-                                <option value={2020}>2020</option>
-                                <option value={2021}>2021</option>
-                                <option value={2022}>2022</option>
-                                <option value={2023}>2023</option>
-                                <option value={2024}>2024</option>
-                                <option value={2025}>2025</option>
-                                <option value={2026}>2026</option>
-                                <option value={2027}>2027</option>
-                                <option value={2028}>2028</option>
-                                <option value={2029}>2029</option>
-                                <option value={2030}>2030</option>
+                            <select className='p-2 rounded-4 fs-13 border border-1 w-100' value={selectedYearsearchweek}
+                                onChange={(e) => setSelectedYearsearchweek(parseInt(e.target.value))}>
+                                {Array.from({ length: 10 }, (_, i) => {
+                                    const year = moment().year() - 5 + i;
+                                    return <option key={year} value={year}>{year}</option>;
+                                })}
                             </select>
                         </IonCol>
                     </IonRow>
                     <IonRow className='my-3'>
-                        <button className='bg-pink text-white fs-13 fw-bold p-3 rounded-pill w-100' onClick={() => setIsModalOpenSearchDate(false)}>{t("xem")}</button>
+                        <button className='bg-pink text-white fs-13 fw-bold p-3 rounded-pill w-100' onClick={() => { setIsModalOpenSearchDate(false); handleSearchWeek() }}>{t("xem")}</button>
                     </IonRow>
                 </IonGrid>
+            </IonModal>
+            {/* Modal search week */}
+            <IonModal isOpen={isModalOpenSearchWeek} onDidDismiss={() => { setIsModalOpenSearchWeek(false) }} initialBreakpoint={1} breakpoints={[0, 1]}>
+                <div className='d-flex justify-content-between mx-3 mt-3' >
+                    <div className='fs-15 '>{t("tim-lich")}</div>
+                    <IonIcon onClick={() => setIsModalOpenSearchWeek(false)} icon={closeOutline} style={{ fontSize: "25px" }}></IonIcon>
+                </div>
+                <IonGrid className='p-3 m-0'>
+                    <IonRow>
+                        <IonCol size='4'>
+
+                            <select
+                                value={selectedDaysearchweek}
+                                onChange={(e) => setSelectedDaysearchweek(parseInt(e.target.value))}
+                                className='p-2 rounded-4 fs-13 border border-1 w-100 bg-light'
+                            >
+                                {Array.from({ length: 31 }, (_, i) => i + 1).map(day => (
+                                    <option key={day} value={day}>
+                                        {day}
+                                    </option>
+                                ))}
+                            </select>
+
+                        </IonCol>
+                        <IonCol size='4'>
+                            <select className='p-2 rounded-4 fs-13 border border-1 w-100 bg-light' value={selectedMonthsearchweek}
+                                onChange={(e) => setSelectedMonthsearchweek(parseInt(e.target.value))}>
+                                {moment.months().map((month, idx) => (
+                                    <option key={idx} value={idx}>{month}</option>
+                                ))}
+                            </select>
+
+                        </IonCol>
+                        <IonCol size='4'>
+                            <select className='p-2 rounded-4 fs-13 border border-1 w-100' value={selectedYearsearchweek}
+                                onChange={(e) => setSelectedYearsearchweek(parseInt(e.target.value))}>
+                                {Array.from({ length: 10 }, (_, i) => {
+                                    const year = moment().year() - 5 + i;
+                                    return <option key={year} value={year}>{year}</option>;
+                                })}
+                            </select>
+                        </IonCol>
+                    </IonRow>
+                    <IonRow className='my-3'>
+                        <button className='bg-pink text-white fs-13 fw-bold p-3 rounded-pill w-100' onClick={() => { setIsModalOpenSearchWeek(false); handleSearchWeek() }}>{t("xem")}</button>
+                    </IonRow>
+                </IonGrid>
+            </IonModal>
+
+            {/* xem Detail */}
+            <IonModal isOpen={isModalOpenDetail} onDidDismiss={() => { setIsModalOpenDetail(false) }} initialBreakpoint={1} breakpoints={[0, 1]}>
+                <div className=' p-0 pb-3' >
+                    <div className='d-flex justify-content-between mx-3 py-3 fixed-header' >
+                        <div className='fs-15 fw-bold'>Hóa đơn: #24541414</div>
+                        <IonIcon onClick={() => setIsModalOpenDetail(false)} icon={closeOutline} style={{ fontSize: "25px" }}></IonIcon>
+                    </div>
+                    <IonGrid className='p-3 overflowY h-100 fs-13' style={{
+                        overflowY: "auto",
+                        maxHeight: "80vh"
+                    }}>
+                        <IonRow className='d-flex justify-content-center fs-13 fw-bold' style={{ fontSize: "20px" }}>
+                            CÔNG TY TNHH ECLO
+                        </IonRow>
+                        <IonRow className='d-flex justify-content-center fs-13 fw-bold mt-1'>
+                            71 Phú Thọ Hòa, P.Phú Thọ Hòa, Q.Tân Phú, TP.HCM
+                        </IonRow>
+                        <IonRow className='d-flex justify-content-center fs-13 fw-bold mt-1'>
+                            Mã số thuế: 0123456789-011
+                        </IonRow>
+                        <IonRow className='d-flex justify-content-center fs-13 fw-bold mt-1'>
+                            Số điện thoại: 0123456789
+                        </IonRow>
+                        <IonRow className='d-flex justify-content-center fs-13 fw-bold mt-3' style={{ fontSize: "20px" }}>
+                            PHIẾU TÍNH TIỀN
+                        </IonRow>
+                        <div className='fs-13 py-2 border-bottom'>
+                            <div>Cơm chiên dương châu</div>
+                            <div className='d-flex justify-content-between align-items-center ms-2'>
+                                <div>1 món x 120.000</div><div>120.000</div>
+                            </div>
+                        </div>
+                        <div className='fs-13 py-2 border-bottom'>
+                            <div>Cơm chiên dương châu</div>
+                            <div className='d-flex justify-content-between align-items-center ms-2'>
+                                <div>1 món x 120.000</div><div>120.000</div>
+                            </div>
+                        </div>
+                        <div className='fs-13 py-2 border-bottom'>
+                            <div>Cơm chiên dương châu</div>
+                            <div className='d-flex justify-content-between align-items-center ms-2'>
+                                <div>1 món x 120.000</div><div>120.000</div>
+                            </div>
+                        </div>
+                        <IonRow className='d-flex justify-content-between border-bottom py-3 fw-bold' style={{ fontSize: "15px" }}>
+                            <div>TỔNG CỘNG (6)</div>
+                            <div>251.000 VND</div>
+                        </IonRow>
+                        <IonRow className='d-flex justify-content-between fs-13 mt-3'>
+                            Phương thức thanh toán: <span>Tiền mặt</span>
+                        </IonRow>
+                        <IonRow className='d-flex justify-content-between fs-13 mt-2'>
+                            VAT: <span>22.000</span>
+                        </IonRow>
+                        <IonRow className='border-bottom mt-2'></IonRow>
+                        <IonRow className='fs-13 mt-2'>Mã hóa đơn: 524534</IonRow>
+                        <IonRow className='fs-13 mt-2'>Ngày giờ: 07/06/2025 20:00:00</IonRow>
+
+                        <IonRow className='d-flex justify-content-center mt-4'>
+                            <img src='https://quickchart.io/qr?text=akjshdiasjhdiauhsdiuasdi&ecLevel=Q&margin=0&size=500' className=' w-25'></img>
+
+                        </IonRow>
+                        <div className='d-flex justify-content-center mt-2 fs-13 fw-bold'>#0000111</div>
+                        <IonRow class='justify-content-center fs-13 mt-3'>
+                            Cảm ơn quý khách !
+                        </IonRow>
+                        <IonRow class='justify-content-center fs-13'>
+                            Hẹn gặp lại !
+                        </IonRow>
+                    </IonGrid>
+                    <IonRow className='d-flex justify-content-end mb-2 mt-3 px-4 '>
+                        <button className='bg-success p-3 rounded-3 text-white'>IN</button>
+                    </IonRow>
+                </div>
             </IonModal>
 
         </IonPage>
