@@ -21,8 +21,11 @@ import {
   calendarOutline,
   cashOutline,
   chatbubbleOutline,
+  fastFoodOutline,
   homeOutline,
-  notificationsOutline
+  notificationsOutline,
+  receiptOutline,
+  sparklesOutline
 } from 'ionicons/icons';
 
 import Home from './pages/Home';
@@ -102,50 +105,53 @@ const TabsWithRoutes: React.FC = () => {
           <Route path="/revenue" component={Revenue} exact />
           <Redirect exact from="/" to="/home" />
         </IonRouterOutlet>
-        <IonHeader slot='top' style={{ backdropFilter: "blur(50px)" }}>
-          <IonToolbar className='shadow-none border border-0'>
-            <IonRow className='d-flex justify-content-between align-items-center p-1'>
-              <img src='../image/happy-corp-logo.png' alt='logo' className='' style={{ width: "70px" }}></img>
-              <div className='d-flex align-items-center'>
-                <button className='rounded-circle p-2 bg-switch-box' style={{ width: "35px", height: "35px" }}> <IonIcon icon={businessOutline} size='15px'></IonIcon></button>
-                <Link to='/user-notification'>
-                  <button className='rounded-circle p-2 bg-switch-box ms-2' style={{ width: "35px", height: "35px" }}> <IonIcon icon={notificationsOutline} size='15px'></IonIcon></button>
-                </Link>
-                <IonMenuToggle menu="end" autoHide={false}>
-                  <img src='https://static-cse.canva.com/blob/1992462/1600w-vkBvE1d_xYA.jpg' alt='avatar' className='rounded-circle ms-2' style={{ width: "40px", height: "40px" }}></img>
-                </IonMenuToggle>
-              </div>
-            </IonRow>
-          </IonToolbar>
-        </IonHeader>
-        {!isLoginPage && (
-          <IonTabBar slot="bottom" className="custom-tabbar">
-            <IonTabButton tab="tab1" href="/booking-table" className={` ${currentPath === '/booking-table' ? 'tab-selected' : 'ion-tab-button-custom'}`}>
-              <IonIcon icon={calendarOutline} />
-              <IonLabel>Đặt bàn</IonLabel>
-            </IonTabButton>
-            <IonTabButton tab="tab2" href="/chat" className={` ${currentPath === '/chat' ? 'tab-selected' : 'ion-tab-button-custom'}`}>
-              <IonIcon icon={chatbubbleOutline} />
-              <IonLabel>Chat</IonLabel>
-            </IonTabButton>
-            <IonTabButton
-              tab="tab3"
-              href="/home"
-              className={` ${currentPath === '/home' ? 'tab-selected' : 'ion-tab-button-custom'}`}
-            >
-              <IonIcon icon={homeOutline} />
-              <IonLabel>Home</IonLabel>
-            </IonTabButton>
 
-            <IonTabButton tab="tab4" href="/history" className={` ${currentPath === '/history' ? 'tab-selected' : 'ion-tab-button-custom'}`}>
-              <IonIcon icon={calendarNumberOutline} />
-              <IonLabel>Hóa đơn</IonLabel>
-            </IonTabButton>
-            <IonTabButton tab="tab5" href="/revenue" className={` ${currentPath === '/invoices' ? 'tab-selected' : 'ion-tab-button-custom'}`}>
-              <IonIcon icon={cashOutline} />
-              <IonLabel>Doanh số</IonLabel>
-            </IonTabButton>
-          </IonTabBar>
+        {!isLoginPage && (
+          <>
+            <IonHeader slot='top' style={{ backdropFilter: "blur(50px)" }}>
+              <IonToolbar className='shadow-none border border-0'>
+                <IonRow className='d-flex justify-content-between align-items-center p-1'>
+                  <img src='../image/happy-corp-logo.png' alt='logo' className='' style={{ width: "70px" }}></img>
+                  <div className='d-flex align-items-center'>
+                    <button className='rounded-circle p-2 bg-switch-box' style={{ width: "35px", height: "35px" }}> <IonIcon icon={businessOutline} size='15px'></IonIcon></button>
+                    <Link to='/user-notification'>
+                      <button className='rounded-circle p-2 bg-switch-box ms-2' style={{ width: "35px", height: "35px" }}> <IonIcon icon={notificationsOutline} size='15px'></IonIcon></button>
+                    </Link>
+                    <IonMenuToggle menu="end" autoHide={false}>
+                      <img src='https://static-cse.canva.com/blob/1992462/1600w-vkBvE1d_xYA.jpg' alt='avatar' className='rounded-circle ms-2' style={{ width: "40px", height: "40px" }}></img>
+                    </IonMenuToggle>
+                  </div>
+                </IonRow>
+              </IonToolbar>
+            </IonHeader>
+            <IonTabBar slot="bottom" className="custom-tabbar">
+              <IonTabButton tab="tab1" href="/booking" className={` ${currentPath === '/booking' ? 'tab-selected' : 'ion-tab-button-custom'}`}>
+                <IonIcon icon={sparklesOutline} />
+                <IonLabel>Bán hàng</IonLabel>
+              </IonTabButton>
+              <IonTabButton tab="tab2" href="/menu" className={` ${currentPath === '/menu' ? 'tab-selected' : 'ion-tab-button-custom'}`}>
+                <IonIcon icon={fastFoodOutline} />
+                <IonLabel>Sản phẩm</IonLabel>
+              </IonTabButton>
+              <IonTabButton
+                tab="tab3"
+                href="/home"
+                className={` ${currentPath === '/home' ? 'tab-selected' : 'ion-tab-button-custom'}`}
+              >
+                <IonIcon icon={homeOutline} />
+                <IonLabel>Home</IonLabel>
+              </IonTabButton>
+
+              <IonTabButton tab="tab4" href="/invoices" className={` ${currentPath === '/invoices' ? 'tab-selected' : 'ion-tab-button-custom'}`}>
+                <IonIcon icon={receiptOutline} />
+                <IonLabel>Hóa đơn</IonLabel>
+              </IonTabButton>
+              <IonTabButton tab="tab5" href="/revenue" className={` ${currentPath === '/invoices' ? 'tab-selected' : 'ion-tab-button-custom'}`}>
+                <IonIcon icon={cashOutline} />
+                <IonLabel>Doanh số</IonLabel>
+              </IonTabButton>
+            </IonTabBar>
+          </>
         )}
       </IonTabs>
     </IonSplitPane>

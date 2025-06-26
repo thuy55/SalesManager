@@ -239,17 +239,17 @@ const Menu: React.FC = () => {
     useEffect(() => {
         tinhtien();
         if (selectFood.length === 0) {
-            setPhidichvu(0);
-            setgiamgia(0);
-            setgiamgiatien(0);
+            setPhidichvu("0");
+            setgiamgia("0");
+            setgiamgiatien("0");
         }
 
     }, [selectFood])
 
     // typeVAT = 1 sau thuế, typeVAT = 2 trước thuế
-    const [phidichvu, setPhidichvu] = useState<number>(0);
-    const [giamgia, setgiamgia] = useState<number>(0);
-    const [giamgiatien, setgiamgiatien] = useState<number>(0);
+    const [phidichvu, setPhidichvu] = useState<string>("0");
+    const [giamgia, setgiamgia] = useState<string>("0");
+    const [giamgiatien, setgiamgiatien] = useState<string>("0");
     const [note, setNote] = useState("");
     const tinhtien = () => {
         const totalAmount = selectFood?.reduce((acc, food) => {
@@ -274,9 +274,9 @@ const Menu: React.FC = () => {
             return acc + thue;
         }, 0);
 
-        const discount1 = totalAmount / 100 * giamgia;
-        const serviceFee1 = totalAmount / 100 * phidichvu;
-        const tamtinh = totalAmount - discount1 - serviceFee1 - giamgiatien;
+        const discount1 = totalAmount / 100 * Number(giamgia);
+        const serviceFee1 = totalAmount / 100 * Number(phidichvu);
+        const tamtinh = totalAmount - discount1 - serviceFee1 - Number(giamgiatien);
         // const thue = tamtinh / 100 * mucthue;
         const thanhtoan = tamtinh + tinhthue;
         setTotal(totalAmount ?? 0);
@@ -293,8 +293,8 @@ const Menu: React.FC = () => {
         setIsModalOpenAddDetail(false)
     }
 
-    function Payment(){
-        window.location.href="/booking-completed";
+    function Payment() {
+        window.location.href = "/booking-completed";
     }
 
 
@@ -336,25 +336,30 @@ const Menu: React.FC = () => {
                             </IonRow>
                         </IonContent>
                     </IonPopover>
-
-
                     <IonRow className='d-flex justify-content-center mt-3 fw-bold text-danger'>{selectTableName}</IonRow>
                     {selectFood && selectFood.length > 0 ? selectFood.map((food, key) => {
                         return (
                             <>
-                                <IonRow className='border-bottom mt-2' key={key}>
+                                <IonRow className=' mt-2' key={key}>
                                     <IonCol size='2'>
                                         <img src={`${food.image}`} className='rounded-3'></img>
                                     </IonCol>
                                     <IonCol size='10'>
-                                        <div className='text-pink fs-13'>{food.name}</div>
-                                        <div className='text-secondary ' style={{ fontSize: "12px" }}>{food.content}</div>
-                                        <IonRow className='d-flex justify-content-between align-items-center'>
-                                            <div className='text-dark fs-13'>{food.price} x {food.quantity} {food.typeVAT == 2 && <span className='ms-2 text-muted'> chưa VAT {food.vat} %</span>}</div>
+                                        <div className='text-danger fw-bold fs-13 d-flex justify-content-between'>
+                                            {food.name}
                                             <button onClick={() => removeFood(food.id)} className='bg-danger fs-11 p-1 text-white rounded-3 d-flex align-items-center'><IonIcon icon={trashOutline} className='me-1'></IonIcon> Xóa</button>
-                                        </IonRow>
-
+                                        </div>
+                                        <div className='text-secondary ' style={{ fontSize: "12px" }}>{food.content}</div>
                                     </IonCol>
+                                </IonRow>
+                                <IonRow className='fs-13 border-bottom align-items-center'>
+                                    <IonCol size='5'>
+                                        <input value={food.price.toLocaleString()} className='p-1 rounded-3 w-100 border border-1 bg-light' placeholder='Nhập giá tiền'></input>
+                                    </IonCol>
+                                    <IonCol size='3'>
+                                        <input value={food.quantity} className='p-1 rounded-3 w-100  border border-1 bg-light' placeholder='Số lượng'></input>
+                                    </IonCol>
+                                    <IonCol size='4' className='text-end'><div className=' fw-bold'>120.000</div></IonCol>
                                 </IonRow>
                             </>
                         )
@@ -406,7 +411,7 @@ const Menu: React.FC = () => {
                             <button onClick={() => { setIsModalOpenAddDetail(true) }} className='p-3 rounded-pill bg-secondary d-flex justify-content-between align-items-center text-white fs-13 w-100'>Thêm chi tiết <IonIcon className='' style={{ fontSize: "18px" }} icon={chevronDownOutline}></IonIcon></button>
                         </IonCol>
                         <IonCol size='6'>
-                            <button className='p-3 fs-13 fw-bold bg-danger text-white rounded-pill w-100' onClick={()=>{Payment()}}>Thanh toán</button>
+                            <button className='p-3 fs-13 fw-bold bg-danger text-white rounded-pill w-100' onClick={() => { Payment() }}>Thanh toán</button>
                         </IonCol>
                     </IonRow>
                 </IonCard>
@@ -566,31 +571,65 @@ const Menu: React.FC = () => {
                     }}>
                         <IonRow className=' fs-13 mt-3'>Phí dịch vụ (%)</IonRow>
                         <IonRow className='mt-2'>
-                            <input type='number' min="0" max="100" value={phidichvu}
+                            <input
+                                type="text"
+                                inputMode="numeric"
+                                pattern="[0-9]*"
+                                value={phidichvu}
                                 onChange={(e) => {
-                                    let value = Number(e.target.value);
-                                    if (value < 0) value = 0;
-                                    if (value > 100) value = 100;
-                                    setPhidichvu(value);
-                                    console.log("Phí dịch vụ", value);
-                                }} className='p-3 rounded-4 fs-13 border border-0 shadow-sm bg-secondary bg-opacity-25  w-100' placeholder="Phí dịch vụ"></input>
+                                    let raw = e.target.value;
+                                    raw = raw.replace(/[^0-9]/g, '');
+                                    if (raw.length > 1) {
+                                        raw = raw.replace(/^0+/, '');
+                                    }
+                                    let num = Number(raw);
+                                    if (num > 100) num = 100;
+                                    setPhidichvu(num.toString());
+                                }}
+                                className="p-3 rounded-4 fs-13 border border-0 shadow-sm bg-secondary bg-opacity-25 w-100"
+                                placeholder="Giảm giá"
+                            />
                         </IonRow>
                         <IonRow className=' fs-13 mt-3'>Giảm giá (%)</IonRow>
                         <IonRow className='mt-2'>
-                            <input type='number' min="0" max="100" value={giamgia} onChange={(e) => {
-                                let value = Number(e.target.value);
-                                if (value < 0) value = 0;
-                                if (value > 100) value = 100;
-                                setgiamgia(value);
-                                console.log("Phí dịch vụ", value);
-                            }} className='p-3 rounded-4 fs-13 border border-0 shadow-sm bg-secondary bg-opacity-25  w-100' placeholder="Giảm giá"></input>
+                            <input
+                                type="text"
+                                inputMode="numeric"
+                                pattern="[0-9]*"
+                                value={giamgia}
+                                onChange={(e) => {
+                                    let raw = e.target.value;
+                                    raw = raw.replace(/[^0-9]/g, '');
+                                    if (raw.length > 1) {
+                                        raw = raw.replace(/^0+/, '');
+                                    }
+                                    let num = Number(raw);
+                                    if (num > 100) num = 100;
+                                    setgiamgia(num.toString());
+                                }}
+                                className="p-3 rounded-4 fs-13 border border-0 shadow-sm bg-secondary bg-opacity-25 w-100"
+                                placeholder="Giảm giá"
+                            />
+
                         </IonRow>
                         <IonRow className=' fs-13 mt-3'>Giảm giá tiền</IonRow>
                         <IonRow className='mt-2'>
-                            <input type='number' value={giamgiatien} onChange={(e) => {
-                                let value = Number(e.target.value);
-                                setgiamgiatien(value);
-                            }} className='p-3 rounded-4 fs-13 border border-0 shadow-sm bg-secondary bg-opacity-25  w-100' placeholder="Giảm giá tiền"></input>
+                            <input
+                                type="text"
+                                inputMode="numeric"
+                                pattern="[0-9]*"
+                                value={giamgiatien.toLocaleString()}
+                                onChange={(e) => {
+                                    let raw = e.target.value;
+                                    raw = raw.replace(/[^0-9]/g, '');
+                                    if (raw.length > 1) {
+                                        raw = raw.replace(/^0+/, '');
+                                    }
+                                    setgiamgiatien(raw.toString());
+                                }}
+                                className="p-3 rounded-4 fs-13 border border-0 shadow-sm bg-secondary bg-opacity-25 w-100"
+                                placeholder="Giảm giá"
+                            />
                         </IonRow>
                         <IonRow className=' fs-13 mt-3'>Ghi chú</IonRow>
                         <IonRow className='mt-2'>

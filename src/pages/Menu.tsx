@@ -271,19 +271,19 @@ const Menu: React.FC = () => {
                             <IonRow className='mt-2'>
                                 <input type='text' className='p-3 rounded-4 fs-13 border border-0 shadow-sm bg-secondary bg-opacity-25  w-100' placeholder={t("ten")}></input>
                             </IonRow>
-                            <IonRow className=' fs-13 fw-bold mt-3'>Mô tả <span className='text-danger ms-1'>(*)</span></IonRow>
+                            <IonRow className=' fs-13 fw-bold mt-3'>Mô tả </IonRow>
                             <IonRow className='mt-2'>
                                 <textarea rows={5} className='p-3 rounded-4 fs-13 border border-0 shadow-sm bg-secondary bg-opacity-25  w-100' placeholder="Mô tả"></textarea>
                             </IonRow>
-                            <IonRow className=' fs-13 fw-bold mt-3'>Đơn vị tính <span className='text-danger ms-1'>(*)</span></IonRow>
+                            <IonRow className=' fs-13 fw-bold mt-3'>Đơn vị tính </IonRow>
                             <IonRow className='mt-2'>
                                 <input type='text' className='p-3 rounded-4 fs-13 border border-0 shadow-sm bg-secondary bg-opacity-25  w-100' placeholder="Đơn vị tính"></input>
                             </IonRow>
-                            <IonRow className=' fs-13 fw-bold mt-3'>Giá <span className='text-danger ms-1'>(*)</span></IonRow>
+                            <IonRow className=' fs-13 fw-bold mt-3'>Giá</IonRow>
                             <IonRow className='mt-2'>
                                 <input type='text' className='p-3 rounded-4 fs-13 border border-0 shadow-sm bg-secondary bg-opacity-25  w-100' placeholder="Giá"></input>
                             </IonRow>
-                            <IonRow className=' fs-13 fw-bold mt-3'>VAT <span className='text-danger ms-1'>(*)</span></IonRow>
+                            <IonRow className=' fs-13 fw-bold mt-3'>VAT</IonRow>
                             <IonRow className='mt-2'>
                                 <IonCol size='6'>
                                     <input type='number' className='p-3 rounded-4 fs-13 border border-0 shadow-sm bg-secondary bg-opacity-25  w-100' placeholder="VAT"></input>
@@ -295,7 +295,7 @@ const Menu: React.FC = () => {
                                     </select>
                                 </IonCol>
                             </IonRow>
-                            <IonRow className=' fs-13 fw-bold mt-3'>Hình ảnh <span className='text-danger ms-1'>(*)</span></IonRow>
+                            <IonRow className=' fs-13 fw-bold mt-3'>Hình ảnh </IonRow>
                             <IonCard className='m-0 mt-3 p-3 rounded-4 bg-secondary bg-opacity-25 shadow-sm border border-1'>
                                 <div style={{ cursor: "pointer" }}>
                                     {uploadImage ? (
